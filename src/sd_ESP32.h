@@ -22,6 +22,9 @@
 
 #ifndef _ESP_SD_H_
 #define _ESP_SD_H_
+#if defined(SDSUPPORT) && defined(ESP3D_WIFISUPPORT)
+#include MARLIN_PATH(sd/SdFatConfig.h)
+#endif
 class ESP_SD
 {
 public:
@@ -47,7 +50,7 @@ public:
     String makepath83(String longpath);
     String makeshortname(String longname, uint8_t index = 1);
     bool openDir(String path);
-    bool readDir(char name[13], uint32_t * size, bool * isFile);
+    bool readDir(char name[13],char longFilename[LONG_FILENAME_LENGTH], uint32_t * size, bool * isFile);
     bool * isFile;
 private:
     void * _sdfile;

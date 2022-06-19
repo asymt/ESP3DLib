@@ -251,6 +251,9 @@ String ESP_SD::get_path_part(String data, int index)
 String ESP_SD::makeshortname(String longname, uint8_t index)
 {
     String s = longname;
+    #if ENABLED(LONG_FILENAME_WRITE_SUPPORT)
+        return s;
+    #endif
     String part_name;
     String part_ext;
     //Sanity check name is uppercase and no space
@@ -347,7 +350,7 @@ bool ESP_SD::openDir(String path)
     return true;
 }
 //TODO may be add date and use a struct for all info
-bool ESP_SD::readDir(char name[13], uint32_t * size, bool * isFile)
+bool ESP_SD::readDir(char name[13],char longFilename[LONG_FILENAME_LENGTH], uint32_t * size, bool * isFile)
 {
     if ((name == NULL) || (size==NULL)) {
         return false;
@@ -356,7 +359,7 @@ bool ESP_SD::readDir(char name[13], uint32_t * size, bool * isFile)
     name[0]= 0;
     * isFile = false;
 
-    if ((workDir.readDir(&dir_info, NULL)) > 0) {
+    if ((workDir.readDir(&dir_info, longFilename)) > 0) {
         workDir.dirName(dir_info,name);
         * size = dir_info.fileSize;
         if (DIR_IS_FILE(&dir_info)) {

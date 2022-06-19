@@ -1351,16 +1351,20 @@ void Web_Server::handle_direct_SDFileList()
         return;
     }
     if (list_files) {
-        char name[13];
+        char name[13], longFilename[LONG_FILENAME_LENGTH];
         uint32_t size;
         bool isFile;
         uint i = 0;
-        while (card.readDir(name,&size,&isFile)) {
+        while (card.readDir(name,longFilename,&size,&isFile)) {
             if (i>0) {
                 jsonfile+=",";
             }
             jsonfile+="{\"name\":\"";
-            jsonfile+=name;
+            #if ENABLED(LONG_FILENAME_WRITE_SUPPORT)
+                jsonfile+=longFilename;
+            else
+                jsonfile+=name;
+            #endif
             jsonfile+="\",\"shortname\":\"";
             jsonfile+=name;
             jsonfile+="\",\"size\":\"";
