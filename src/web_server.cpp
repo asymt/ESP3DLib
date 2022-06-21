@@ -1360,11 +1360,7 @@ void Web_Server::handle_direct_SDFileList()
                 jsonfile+=",";
             }
             jsonfile+="{\"name\":\"";
-            #if ENABLED(LONG_FILENAME_WRITE_SUPPORT)
-                jsonfile+=longFilename;
-            else
-                jsonfile+=name;
-            #endif
+            jsonfile+=longFilename;
             jsonfile+="\",\"shortname\":\"";
             jsonfile+=name;
             jsonfile+="\",\"size\":\"";
